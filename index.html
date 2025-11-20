@@ -1,275 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Prefectorial Dashboard</title>
   <style>
-    :root{--bg:#f1f5f9;--card:#ffffff;--muted:#64748b;--accent:#0ea5e9}
-    body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;margin:0;background:var(--bg);color:#0f172a}
-    .container{max-width:1100px;margin:28px auto;padding:18px}
-    header{display:flex;align-items:center;justify-content:space-between;gap:12px}
-    .brand{display:flex;align-items:center;gap:12px}
-    .logo{width:48px;height:48px;background:#e2e8f0;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700}
-    .card{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 1px 2px rgba(2,6,23,0.06)}
-    nav{width:230px}
-    .layout{display:grid;grid-template-columns:260px 1fr;gap:18px;margin-top:18px}
-    .nav-btn{display:block;padding:10px;border-radius:8px;text-align:left;border:none;background:transparent;width:100%;cursor:pointer}
-    .nav-btn.active{background:#eef2ff}
-    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-    table{width:100%;border-collapse:collapse}
-    th{color:var(--muted);text-align:left;padding:6px 8px;font-size:13px}
-    td{padding:8px;border-top:1px solid #e6edf3;font-size:14px}
-    input,select,textarea{padding:8px;border-radius:8px;border:1px solid #e6edf3;width:100%;box-sizing:border-box}
-    .btn{padding:8px 12px;border-radius:8px;border:none;cursor:pointer}
-    .btn.primary{background:var(--accent);color:white}
-    .muted{color:var(--muted);font-size:13px}
-    footer{margin-top:18px;text-align:center;color:var(--muted);font-size:12px}
-    @media(max-width:900px){.layout{grid-template-columns:1fr;}.nav{order:2}}
+    :root { --bg:#f1f5f9; --card:#fff; --muted:#64748b; --accent:#0ea5e9; }
+    body { font-family: sans-serif; margin:0; background:var(--bg); color:#0f172a; }
+    .container{ max-width:1100px; margin:28px auto; padding:18px; }
+    header{ display:flex; justify-content:space-between; align-items:center; }
+    .logo{ width:48px; height:48px; background:#e2e8f0; border-radius:10px; display:flex; justify-content:center; align-items:center; font-weight:700; }
+    .card{ background:var(--card); padding:14px; border-radius:12px; box-shadow:0 1px 2px rgba(2,6,23,0.06); margin-bottom:12px; }
+    nav{ display:flex; flex-direction:column; gap:6px; margin-bottom:12px; }
+    nav button{ padding:8px 12px; border:none; border-radius:8px; cursor:pointer; text-align:left; background:#e2e8f0; }
+    nav button.active{ background:#eef2ff; }
+    table{ width:100%; border-collapse:collapse; }
+    th, td{ padding:6px 8px; border-top:1px solid #e6edf3; font-size:14px; }
+    input, select{ padding:8px; border-radius:8px; border:1px solid #e6edf3; width:100%; box-sizing:border-box; }
+    .btn{ padding:8px 12px; border:none; border-radius:8px; cursor:pointer; }
+    .btn.primary{ background:var(--accent); color:white; }
+    .muted{ color:var(--muted); font-size:13px; }
+    footer{ text-align:center; color:var(--muted); font-size:12px; margin-top:12px; }
+    @media(max-width:900px){ .layout{ flex-direction:column; } }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <div class="brand">
-        <div class="logo">PB</div>
-        <div>
-          <div style="font-weight:700">Prefectorial Dashboard</div>
-          <div class="muted">Front-end only · Data stored in browser</div>
-        </div>
+<div class="container">
+  <header>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="logo">PB</div>
+      <div>
+        <div style="font-weight:700">Prefectorial Dashboard</div>
+        <div class="muted">Front-end only • Data in browser</div>
       </div>
-      <div id="user-area" class="muted">Not signed in</div>
-    </header>
-
-    <div class="layout">
-      <aside class="card nav">
-        <button class="nav-btn active" data-route="dashboard">Dashboard</button>
-        <button class="nav-btn" data-route="duties">Duty Roster</button>
-        <button class="nav-btn" data-route="records">Discipline Records</button>
-        <button class="nav-btn" data-route="reports">Reports</button>
-        <button class="nav-btn" data-route="manage">Manage Prefects</button>
-        <div style="margin-top:12px">
-          <button id="logout-btn" class="btn" style="display:none">Logout</button>
-        </div>
-      </aside>
-
-      <main>
-        <!-- LOGIN CARD -->
-        <div id="login" class="card">
-          <h2>Sign in</h2>
-          <div class="muted">Choose role and enter secret code</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
-            <select id="role">
-              <option value="admin">Admin</option>
-              <option value="prefect">Prefect</option>
-            </select>
-            <input id="displayName" placeholder="Display name (optional)" />
-            <input id="secret" placeholder="Secret code" type="password" />
-            <div class="muted">Admin: <code>admin123</code> · Prefect: <code>prefect123</code></div>
-          </div>
-          <div style="margin-top:12px;display:flex;gap:8px">
-            <button id="signin" class="btn primary">Sign in</button>
-            <button id="reset" class="btn">Reset</button>
-          </div>
-          <div id="login-error" class="muted" style="color:#c026d3;margin-top:8px;display:none"></div>
-        </div>
-
-        <!-- DYNAMIC VIEWS -->
-        <div id="views" style="display:none">
-
-          <div id="dashboard" class="card view">
-            <h3>Quick overview</h3>
-            <div class="grid-3" style="margin-top:12px">
-              <div class="card"><div class="muted">Prefects</div><div id="stat-prefects" style="font-size:22px;font-weight:700">0</div></div>
-              <div class="card"><div class="muted">Duties Today</div><div id="stat-duties" style="font-size:22px;font-weight:700">0</div></div>
-              <div class="card"><div class="muted">Records</div><div id="stat-records" style="font-size:22px;font-weight:700">0</div></div>
-            </div>
-
-            <div style="margin-top:12px" class="card">
-              <div class="muted">Upcoming Duties (latest)</div>
-              <table style="margin-top:8px"><thead><tr><th>Date</th><th>Prefect</th><th>Shift</th><th>Note</th></tr></thead><tbody id="upcoming-duties"></tbody></table>
-            </div>
-          </div>
-
-          <div id="duties" class="card view" style="display:none">
-            <h3>Add Duty</h3>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
-              <input type="date" id="duty-date" />
-              <select id="duty-prefect"></select>
-              <input id="duty-shift" placeholder="Shift (Morning/Afternoon)" />
-              <input id="duty-note" placeholder="Note" />
-            </div>
-            <div style="margin-top:8px"><button id="add-duty" class="btn primary">Add Duty</button></div>
-
-            <div style="margin-top:12px" class="card">
-              <div class="muted">Duty Roster</div>
-              <table style="margin-top:8px"><thead><tr><th>Date</th><th>Prefect</th><th>Shift</th><th>Note</th></tr></thead><tbody id="duty-list"></tbody></table>
-            </div>
-          </div>
-
-          <div id="records" class="card view" style="display:none">
-            <h3>Add Discipline Record</h3>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
-              <input type="date" id="rec-date" />
-              <input id="rec-student" placeholder="Student name" />
-              <input id="rec-offence" placeholder="Offence" />
-              <input id="rec-action" placeholder="Action taken" />
-              <input id="rec-handled" placeholder="Handled by" />
-              <div></div>
-              <div style="display:flex;gap:8px"><button id="add-record" class="btn primary">Add Record</button></div>
-            </div>
-
-            <div style="margin-top:12px" class="card">
-              <div class="muted">Records</div>
-              <input id="rec-search" placeholder="Search by student, offence, handler" style="margin-top:8px" />
-              <table style="margin-top:8px"><thead><tr><th>Date</th><th>Student</th><th>Offence</th><th>Action</th><th>Handled</th></tr></thead><tbody id="record-list"></tbody></table>
-            </div>
-          </div>
-
-          <div id="reports" class="card view" style="display:none">
-            <h3>Reports</h3>
-            <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
-              <input type="date" id="rep-from" />
-              <input type="date" id="rep-to" />
-              <button id="print-report" class="btn">Print</button>
-            </div>
-            <div class="card" style="margin-top:12px">
-              <div class="muted">Summary</div>
-              <div style="display:flex;gap:8px;margin-top:8px"><div class="card" style="padding:10px">Duties: <span id="rep-duties">0</span></div><div class="card" style="padding:10px">Records: <span id="rep-records">0</span></div></div>
-            </div>
-          </div>
-
-          <div id="manage" class="card view" style="display:none">
-            <h3>Manage Prefects</h3>
-            <div style="display:flex;gap:8px;margin-top:8px">
-              <input id="pref-name" placeholder="Name" />
-              <input id="pref-level" placeholder="Level (eg. Form 5)" />
-              <button id="add-prefect" class="btn primary">Add</button>
-            </div>
-            <div style="margin-top:12px" class="card">
-              <div class="muted">Prefects</div>
-              <table style="margin-top:8px"><thead><tr><th>Name</th><th>Level</th><th>Duty</th></tr></thead><tbody id="prefect-list"></tbody></table>
-            </div>
-          </div>
-
-        </div>
-
-      </main>
     </div>
+    <div id="user-area" class="muted">Not signed in</div>
+  </header>
 
-    <footer class="muted">Built for school use • Front-end only • Data saved in browser localStorage</footer>
+  <div class="card" id="login">
+    <h2>Sign in</h2>
+    <div class="muted">Choose role and enter secret code</div>
+    <div style="display:flex;gap:8px; margin-top:8px;">
+      <select id="role"><option value="admin">Admin</option><option value="prefect">Prefect</option></select>
+      <input id="displayName" placeholder="Display name (optional)" />
+      <input id="secret" type="password" placeholder="Secret code" />
+      <button id="signin" class="btn primary">Sign in</button>
+    </div>
+    <div id="login-error" class="muted" style="color:#c026d3; margin-top:8px; display:none"></div>
   </div>
 
-  <script>
-    // --- Simple front-end dashboard (plain HTML) ---
-    // Default secrets: admin123 / prefect123
+  <div id="views" style="display:none">
+    <nav>
+      <button class="active" data-route="dashboard">Dashboard</button>
+      <button data-route="duties">Duty Roster</button>
+      <button data-route="records">Discipline Records</button>
+      <button data-route="reports">Reports</button>
+      <button data-route="manage">Manage Prefects</button>
+      <button id="logout-btn" style="display:none; margin-top:12px;">Logout</button>
+    </nav>
 
-    // Utilities
-    const qs = s => document.querySelector(s);
-    const qsa = s => Array.from(document.querySelectorAll(s));
+    <div id="dashboard" class="card view">
+      <h3>Quick overview</h3>
+      <div id="stats"></div>
+    </div>
 
-    // App state
-    let user = null; // {role, name}
-    const storage = {
-      prefects: JSON.parse(localStorage.getItem('prefects')||'null') || [{id:1,name:'Alex Tan',level:'Form 5',duty:'Gate'},{id:2,name:'Lim Mei',level:'Form 4',duty:'Assembly'}],
-      duties: JSON.parse(localStorage.getItem('duties')||'null') || [{id:1,date:'2025-11-21',prefectId:1,shift:'Morning',note:'On time'}],
-      records: JSON.parse(localStorage.getItem('records')||'null') || [{id:1,date:'2025-11-10',student:'John Doe',offence:'Late',action:'Warning',handledBy:'Alex Tan'}]
-    };
-    function save(){ localStorage.setItem('prefects',JSON.stringify(storage.prefects)); localStorage.setItem('duties',JSON.stringify(storage.duties)); localStorage.setItem('records',JSON.stringify(storage.records)); }
+    <div id="duties" class="card view" style="display:none">
+      <h3>Add Duty</h3>
+      <input type="date" id="duty-date" />
+      <select id="duty-prefect"></select>
+      <input id="duty-shift" placeholder="Shift" />
+      <input id="duty-note" placeholder="Note" />
+      <button id="add-duty" class="btn primary">Add Duty</button>
+      <table><thead><tr><th>Date</th><th>Prefect</th><th>Shift</th><th>Note</th></tr></thead><tbody id="duty-list"></tbody></table>
+    </div>
 
-    // Elements
-    const viewsWrap = qs('#views');
-    const loginCard = qs('#login');
-    const userArea = qs('#user-area');
-    const navBtns = qsa('.nav-btn');
+    <div id="records" class="card view" style="display:none">
+      <h3>Add Discipline Record</h3>
+      <input type="date" id="rec-date" />
+      <input id="rec-student" placeholder="Student name" />
+      <input id="rec-offence" placeholder="Offence" />
+      <input id="rec-action" placeholder="Action taken" />
+      <input id="rec-handled" placeholder="Handled by" />
+      <button id="add-record" class="btn primary">Add Record</button>
+      <input id="rec-search" placeholder="Search" />
+      <table><thead><tr><th>Date</th><th>Student</th><th>Offence</th><th>Action</th><th>Handled</th></tr></thead><tbody id="record-list"></tbody></table>
+    </div>
 
-    // Init dates
-    qs('#duty-date').value = new Date().toISOString().slice(0,10);
-    qs('#rec-date').value = new Date().toISOString().slice(0,10);
-    qs('#rep-to').value = new Date().toISOString().slice(0,10);
-    qs('#rep-from').value = new Date(new Date().getTime()-7*24*3600*1000).toISOString().slice(0,10);
+    <div id="manage" class="card view" style="display:none">
+      <h3>Manage Prefects</h3>
+      <input id="pref-name" placeholder="Name" />
+      <input id="pref-level" placeholder="Level" />
+      <button id="add-prefect" class="btn primary">Add</button>
+      <table><thead><tr><th>Name</th><th>Level</th></tr></thead><tbody id="prefect-list"></tbody></table>
+    </div>
+  </div>
 
-    // Render helpers
-    function renderStats(){
-      qs('#stat-prefects').textContent = storage.prefects.length;
-      const today = new Date().toISOString().slice(0,10);
-      const dutiesToday = storage.duties.filter(d=>d.date===today).length;
-      qs('#stat-duties').textContent = dutiesToday;
-      qs('#stat-records').textContent = storage.records.length;
-    }
+  <footer class="muted">Built for school use • Front-end only • Data saved in browser localStorage</footer>
+</div>
 
-    function renderUpcoming(){
-      const tbody = qs('#upcoming-duties'); tbody.innerHTML='';
-      storage.duties.slice(-8).reverse().forEach(d=>{ const p = storage.prefects.find(x=>x.id===d.prefectId) || {}; const tr = `<tr><td>${d.date}</td><td>${p.name||'-'}</td><td>${d.shift}</td><td>${d.note||''}</td></tr>`; tbody.insertAdjacentHTML('beforeend',tr); })
-    }
+<script>
+// --- JS logic ---
+let user=null;
+const storage={prefects:[],duties:[],records:[]};
+const qs=s=>document.querySelector(s);
+const qsa=s=>Array.from(document.querySelectorAll(s));
 
-    function renderDutyList(){ qs('#duty-list').innerHTML=''; storage.duties.forEach(d=>{ const p = storage.prefects.find(x=>x.id===d.prefectId) || {}; qs('#duty-list').insertAdjacentHTML('beforeend',`<tr><td>${d.date}</td><td>${p.name||'-'}</td><td>${d.shift}</td><td>${d.note||''}</td></tr>`); }) }
+function showView(view){ qsa('.view').forEach(v=>v.style.display='none'); qs('#'+view).style.display='block'; }
+qsa('nav button').forEach(b=>{ b.addEventListener('click',()=>{ qsa('nav button').forEach(x=>x.classList.remove('active')); b.classList.add('active'); showView(b.dataset.route); }); });
 
-    function renderPrefectOptions(){ const sel = qs('#duty-prefect'); sel.innerHTML=''; storage.prefects.forEach(p=>{ sel.insertAdjacentHTML('beforeend',`<option value="${p.id}">${p.name} — ${p.level}</option>`); }); }
+qs('#signin').addEventListener('click',()=>{
+  const role=qs('#role').value; const name=qs('#displayName').value||role; const secret=qs('#secret').value;
+  if((role==='admin'&&secret==='admin123')||(role==='prefect'&&secret==='prefect123')){
+    user={role,name};
+    qs('#login').style.display='none';
+    qs('#views').style.display='block';
+    qs('#user-area').textContent=name+' • '+role;
+    qs('#logout-btn').style.display='inline-block';
+    renderAll();
+  }else{ qs('#login-error').style.display='block'; qs('#login-error').textContent='Invalid secret'; }
+});
+qs('#logout-btn').addEventListener('click',()=>{ user=null; qs('#login').style.display='block'; qs('#views').style.display='none'; qs('#user-area').textContent='Not signed in'; qs('#logout-btn').style.display='none'; });
 
-    function renderPrefects(){ qs('#prefect-list').innerHTML=''; storage.prefects.forEach(p=>{ qs('#prefect-list').insertAdjacentHTML('beforeend',`<tr><td>${p.name}</td><td>${p.level}</td><td>${p.duty||'-'}</td></tr>`); }); }
+function renderAll(){
+  const pfList=qs('#prefect-list'); pfList.innerHTML=''; storage.prefects.forEach(p=>{ pfList.insertAdjacentHTML('beforeend',`<tr><td>${p.name}</td><td>${p.level}</td></tr>`); });
+}
 
-    function renderRecords(filter=''){ const tbody = qs('#record-list'); tbody.innerHTML=''; storage.records.filter(r=>{ if(!filter) return true; const s=filter.toLowerCase(); return r.student.toLowerCase().includes(s)||r.offence.toLowerCase().includes(s)||r.handledBy.toLowerCase().includes(s) }).forEach(r=>{ tbody.insertAdjacentHTML('beforeend',`<tr><td>${r.date}</td><td>${r.student}</td><td>${r.offence}</td><td>${r.action}</td><td>${r.handledBy}</td></tr>`); }) }
-
-    function refreshAll(){ renderStats(); renderUpcoming(); renderDutyList(); renderPrefectOptions(); renderPrefects(); renderRecords(); }
-
-    // Navigation
-    navBtns.forEach(b=>b.addEventListener('click',()=>{ navBtns.forEach(x=>x.classList.remove('active')); b.classList.add('active'); const r=b.dataset.route; qsa('.view').forEach(v=>v.style.display='none'); qs('#'+r).style.display='block'; }))
-
-    // Login
-    qs('#signin').addEventListener('click',()=>{
-      const role = qs('#role').value; const name = qs('#displayName').value.trim()|| (role==='admin'?'Admin':'Prefect'); const secret = qs('#secret').value.trim();
-      const ok = (role==='admin' && secret==='admin123') || (role==='prefect' && secret==='prefect123');
-      if(!ok){ qs('#login-error').style.display='block'; qs('#login-error').textContent='Invalid secret'; return; }
-      user = {role,name}; qs('#login').style.display='none'; viewsWrap.style.display='block'; qs('#user-area').textContent = `${name} • ${role}`; qs('#logout-btn').style.display='inline-block'; refreshAll();
-    });
-
-    qs('#reset').addEventListener('click',()=>{ qs('#displayName').value=''; qs('#secret').value=''; qs('#login-error').style.display='none'; })
-
-    qs('#logout-btn').addEventListener('click',()=>{ user=null; qs('#login').style.display='block'; viewsWrap.style.display='none'; qs('#user-area').textContent='Not signed in'; qs('#logout-btn').style.display='none'; })
-
-    // Add prefect
-    qs('#add-prefect').addEventListener('click',()=>{ const name = qs('#pref-name').value.trim(); const level = qs('#pref-level').value.trim(); if(!name) return alert('Enter name'); storage.prefects.push({id:Date.now(),name,level}); qs('#pref-name').value=''; qs('#pref-level').value=''; save(); refreshAll(); })
-
-    // Add duty
-    qs('#add-duty').addEventListener('click',()=>{ const date = qs('#duty-date').value; const prefectId = Number(qs('#duty-prefect').value); const shift = qs('#duty-shift').value.trim(); const note = qs('#duty-note').value.trim(); if(!date||!prefectId) return alert('Choose date & prefect'); storage.duties.push({id:Date.now(),date,prefectId,shift,note}); qs('#duty-note').value=''; save(); refreshAll(); })
-
-    // Add record
-    qs('#add-record').addEventListener('click',()=>{ const date = qs('#rec-date').value; const student = qs('#rec-student').value.trim(); const offence = qs('#rec-offence').value.trim(); const action = qs('#rec-action').value.trim(); const handledBy = qs('#rec-handled').value.trim(); if(!student||!offence) return alert('Enter student & offence'); storage.records.push({id:Date.now(),date,student,offence,action,handledBy}); qs('#rec-student').value=''; qs('#rec-offence').value=''; qs('#rec-action').value=''; qs('#rec-handled').value=''; save(); refreshAll(); })
-
-    qs('#rec-search').addEventListener('input',e=>renderRecords(e.target.value));
-
-    // Print report
-    qs('#print-report').addEventListener('click',()=>{ const from = qs('#rep-from').value; const to = qs('#rep-to').value; const duties = storage.duties.filter(d=>d.date>=from && d.date<=to); const records = storage.records.filter(r=>r.date>=from && r.date<=to); qs('#rep-duties').textContent = duties.length; qs('#rep-records').textContent = records.length; window.print(); })
-
-    // initial render
-    refreshAll();
-  </script>
-
-  <!--
-    STEP-BY-STEP (Also included inside this file so you can copy-paste):
-    1) Create a GitHub account at https://github.com if you don't have one.
-    2) Create a new repository named EXACTLY: your-username.github.io (replace your-username).
-       - Set it Public. You can add a README but it's optional.
-    3) In the new repo click: Add file -> Create new file. Name it: index.html
-    4) Copy the full contents of this file (the entire HTML) and paste into the GitHub editor.
-    5) Commit the change at the bottom (Commit new file).
-    6) Go to Settings -> Pages (left sidebar). Under "Source" choose Deploy from a branch -> main -> / (root) -> Save.
-    7) Wait a couple minutes, then visit: https://your-username.github.io (replace your-username) to see the site.
-
-    Alternative (using Git CLI):
-    - git init
-    - git add index.html
-    - git commit -m "Add site"
-    - git branch -M main
-    - git remote add origin https://github.com/your-username/your-username.github.io.git
-    - git push -u origin main
-
-    Notes and tips:
-    - This is front-end only. "Login" uses simple secret codes (admin123 / prefect123) — do NOT use for real security.
-    - Data (prefects, duties, records) is stored in each user's browser localStorage. To share data between users you'd need a server or Google Sheets/Firebase.
-    - You can edit the page directly on GitHub anytime to change fields, defaults, or styles.
-    - To preview locally just open the index.html file in a browser or use VS Code Live Server extension.
-  -->
+qs('#add-prefect').addEventListener('click',()=>{
+  const name=qs('#pref-name').value; const level=qs('#pref-level').value;
+  if(!name) return alert('Enter name');
+  storage.prefects.push({name,level}); qs('#pref-name').value=''; qs('#pref-level').value=''; renderAll();
+});
+</script>
 </body>
 </html>
+
