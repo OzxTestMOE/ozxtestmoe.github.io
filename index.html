@@ -1,136 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Prefectorial Dashboard</title>
-  <style>
-    :root { --bg:#f1f5f9; --card:#fff; --muted:#64748b; --accent:#0ea5e9; }
-    body { font-family: sans-serif; margin:0; background:var(--bg); color:#0f172a; }
-    .container{ max-width:1100px; margin:28px auto; padding:18px; }
-    header{ display:flex; justify-content:space-between; align-items:center; }
-    .logo{ width:48px; height:48px; background:#e2e8f0; border-radius:10px; display:flex; justify-content:center; align-items:center; font-weight:700; }
-    .card{ background:var(--card); padding:14px; border-radius:12px; box-shadow:0 1px 2px rgba(2,6,23,0.06); margin-bottom:12px; }
-    nav{ display:flex; flex-direction:column; gap:6px; margin-bottom:12px; }
-    nav button{ padding:8px 12px; border:none; border-radius:8px; cursor:pointer; text-align:left; background:#e2e8f0; }
-    nav button.active{ background:#eef2ff; }
-    table{ width:100%; border-collapse:collapse; }
-    th, td{ padding:6px 8px; border-top:1px solid #e6edf3; font-size:14px; }
-    input, select{ padding:8px; border-radius:8px; border:1px solid #e6edf3; width:100%; box-sizing:border-box; }
-    .btn{ padding:8px 12px; border:none; border-radius:8px; cursor:pointer; }
-    .btn.primary{ background:var(--accent); color:white; }
-    .muted{ color:var(--muted); font-size:13px; }
-    footer{ text-align:center; color:var(--muted); font-size:12px; margin-top:12px; }
-    @media(max-width:900px){ .layout{ flex-direction:column; } }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prefectorial Dashboard</title>
+<style>
+:root{--bg:#f1f5f9;--card:#fff;--muted:#64748b;--accent:#0ea5e9;}
+body{font-family:sans-serif;margin:0;background:var(--bg);color:#0f172a;}
+.container{max-width:1100px;margin:28px auto;padding:18px;}
+header{display:flex;justify-content:space-between;align-items:center;}
+.logo{width:48px;height:48px;background:#e2e8f0;border-radius:10px;display:flex;justify-content:center;align-items:center;font-weight:700;}
+.card{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 1px 2px rgba(2,6,23,0.06);margin-bottom:12px;}
+nav{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;}
+nav button{padding:8px 12px;border:none;border-radius:8px;cursor:pointer;text-align:left;background:#e2e8f0;}
+nav button.active{background:#eef2ff;}
+table{width:100%;border-collapse:collapse;}
+th,td{padding:6px 8px;border-top:1px solid #e6edf3;font-size:14px;}
+input,select{padding:8px;border-radius:8px;border:1px solid #e6edf3;width:100%;box-sizing:border-box;}
+.btn{padding:8px 12px;border:none;border-radius:8px;cursor:pointer;}
+.btn.primary{background:var(--accent);color:white;}
+.muted{color:var(--muted);font-size:13px;}
+footer{text-align:center;color:var(--muted);font-size:12px;margin-top:12px;}
+@media(max-width:900px){.layout{flex-direction:column;}}
+</style>
 </head>
 <body>
 <div class="container">
-  <header>
-    <div style="display:flex;align-items:center;gap:12px;">
-      <div class="logo">PB</div>
-      <div>
-        <div style="font-weight:700">Prefectorial Dashboard</div>
-        <div class="muted">Front-end only • Data in browser</div>
-      </div>
-    </div>
-    <div id="user-area" class="muted">Not signed in</div>
-  </header>
+<header>
+<div style="display:flex;align-items:center;gap:12px;">
+<div class="logo">PB</div>
+<div>
+<div style="font-weight:700">Prefectorial Dashboard</div>
+<div class="muted">Front-end only • Data in browser</div>
+</div>
+</div>
+<div id="user-area" class="muted">Not signed in</div>
+</header>
 
-  <div class="card" id="login">
-    <h2>Sign in</h2>
-    <div class="muted">Choose role and enter secret code</div>
-    <div style="display:flex;gap:8px; margin-top:8px;">
-      <select id="role"><option value="admin">Admin</option><option value="prefect">Prefect</option></select>
-      <input id="displayName" placeholder="Display name (optional)" />
-      <input id="secret" type="password" placeholder="Secret code" />
-      <button id="signin" class="btn primary">Sign in</button>
-    </div>
-    <div id="login-error" class="muted" style="color:#c026d3; margin-top:8px; display:none"></div>
-  </div>
+<div class="card" id="login">
+<h2>Sign in</h2>
+<div class="muted">Choose role and enter secret code</div>
+<div style="display:flex;gap:8px; margin-top:8px;">
+<select id="role"><option value="admin">Admin</option><option value="prefect">Prefect</option></select>
+<input id="displayName" placeholder="Display name (optional)" />
+<input id="secret" type="password" placeholder="Secret code" />
+<button id="signin" class="btn primary">Sign in</button>
+</div>
+<div id="login-error" class="muted" style="color:#c026d3; margin-top:8px; display:none"></div>
+</div>
 
-  <div id="views" style="display:none">
-    <nav>
-      <button class="active" data-route="dashboard">Dashboard</button>
-      <button data-route="duties">Duty Roster</button>
-      <button data-route="records">Discipline Records</button>
-      <button data-route="reports">Reports</button>
-      <button data-route="manage">Manage Prefects</button>
-      <button id="logout-btn" style="display:none; margin-top:12px;">Logout</button>
-    </nav>
+<div id="views" style="display:none">
+<nav>
+<button class="active" data-route="dashboard">Dashboard</button>
+<button data-route="duties">Duty Roster</button>
+<button data-route="records">Discipline Records</button>
+<button data-route="reports">Reports</button>
+<button data-route="manage">Manage Prefects</button>
+<button id="logout-btn" style="display:none; margin-top:12px;">Logout</button>
+</nav>
 
-    <div id="dashboard" class="card view">
-      <h3>Quick overview</h3>
-      <div id="stats"></div>
-    </div>
+<div id="dashboard" class="card view">
+<h3>Quick overview</h3>
+<div id="stats"></div>
+</div>
 
-    <div id="duties" class="card view" style="display:none">
-      <h3>Add Duty</h3>
-      <input type="date" id="duty-date" />
-      <select id="duty-prefect"></select>
-      <input id="duty-shift" placeholder="Shift" />
-      <input id="duty-note" placeholder="Note" />
-      <button id="add-duty" class="btn primary">Add Duty</button>
-      <table><thead><tr><th>Date</th><th>Prefect</th><th>Shift</th><th>Note</th></tr></thead><tbody id="duty-list"></tbody></table>
-    </div>
+<div id="duties" class="card view" style="display:none">
+<h3>Add Duty</h3>
+<input type="date" id="duty-date" />
+<select id="duty-prefect"></select>
+<input id="duty-shift" placeholder="Shift" />
+<input id="duty-note" placeholder="Note" />
+<button id="add-duty" class="btn primary">Add Duty</button>
+<table><thead><tr><th>Date</th><th>Prefect</th><th>Shift</th><th>Note</th></tr></thead><tbody id="duty-list"></tbody></table>
+</div>
 
-    <div id="records" class="card view" style="display:none">
-      <h3>Add Discipline Record</h3>
-      <input type="date" id="rec-date" />
-      <input id="rec-student" placeholder="Student name" />
-      <input id="rec-offence" placeholder="Offence" />
-      <input id="rec-action" placeholder="Action taken" />
-      <input id="rec-handled" placeholder="Handled by" />
-      <button id="add-record" class="btn primary">Add Record</button>
-      <input id="rec-search" placeholder="Search" />
-      <table><thead><tr><th>Date</th><th>Student</th><th>Offence</th><th>Action</th><th>Handled</th></tr></thead><tbody id="record-list"></tbody></table>
-    </div>
+<div id="records" class="card view" style="display:none">
+<h3>Add Discipline Record</h3>
+<input type="date" id="rec-date" />
+<input id="rec-student" placeholder="Student name" />
+<input id="rec-offence" placeholder="Offence" />
+<input id="rec-action" placeholder="Action taken" />
+<input id="rec-handled" placeholder="Handled by" />
+<button id="add-record" class="btn primary">Add Record</button>
+<input id="rec-search" placeholder="Search" />
+<table><thead><tr><th>Date</th><th>Student</th><th>Offence</th><th>Action</th><th>Handled</th></tr></thead><tbody id="record-list"></tbody></table>
+</div>
 
-    <div id="manage" class="card view" style="display:none">
-      <h3>Manage Prefects</h3>
-      <input id="pref-name" placeholder="Name" />
-      <input id="pref-level" placeholder="Level" />
-      <button id="add-prefect" class="btn primary">Add</button>
-      <table><thead><tr><th>Name</th><th>Level</th></tr></thead><tbody id="prefect-list"></tbody></table>
-    </div>
-  </div>
+<div id="manage" class="card view" style="display:none">
+<h3>Manage Prefects</h3>
+<input id="pref-name" placeholder="Name" />
+<input id="pref-level" placeholder="Level" />
+<button id="add-prefect" class="btn primary">Add</button>
+<table><thead><tr><th>Name</th><th>Level</th></tr></thead><tbody id="prefect-list"></tbody></table>
+</div>
+</div>
 
-  <footer class="muted">Built for school use • Front-end only • Data saved in browser localStorage</footer>
+<footer class="muted">Built for school use • Front-end only • Data saved in browser localStorage</footer>
 </div>
 
 <script>
-// --- JS logic ---
 let user=null;
-const storage={prefects:[],duties:[],records:[]};
+const storage={
+  prefects: JSON.parse(localStorage.getItem('prefects')||'[]'),
+  duties: JSON.parse(localStorage.getItem('duties')||'[]'),
+  records: JSON.parse(localStorage.getItem('records')||'[]')
+};
 const qs=s=>document.querySelector(s);
 const qsa=s=>Array.from(document.querySelectorAll(s));
 
 function showView(view){ qsa('.view').forEach(v=>v.style.display='none'); qs('#'+view).style.display='block'; }
 qsa('nav button').forEach(b=>{ b.addEventListener('click',()=>{ qsa('nav button').forEach(x=>x.classList.remove('active')); b.classList.add('active'); showView(b.dataset.route); }); });
 
-qs('#signin').addEventListener('click',()=>{
-  const role=qs('#role').value; const name=qs('#displayName').value||role; const secret=qs('#secret').value;
-  if((role==='admin'&&secret==='admin123')||(role==='prefect'&&secret==='prefect123')){
-    user={role,name};
-    qs('#login').style.display='none';
-    qs('#views').style.display='block';
-    qs('#user-area').textContent=name+' • '+role;
-    qs('#logout-btn').style.display='inline-block';
-    renderAll();
-  }else{ qs('#login-error').style.display='block'; qs('#login-error').textContent='Invalid secret'; }
-});
-qs('#logout-btn').addEventListener('click',()=>{ user=null; qs('#login').style.display='block'; qs('#views').style.display='none'; qs('#user-area').textContent='Not signed in'; qs('#logout-btn').style.display='none'; });
-
-function renderAll(){
-  const pfList=qs('#prefect-list'); pfList.innerHTML=''; storage.prefects.forEach(p=>{ pfList.insertAdjacentHTML('beforeend',`<tr><td>${p.name}</td><td>${p.level}</td></tr>`); });
+// ---------------- Render ----------------
+function renderPrefects(){
+  const pfList = qs('#prefect-list'); pfList.innerHTML='';
+  storage.prefects.forEach((p,i)=>{ pfList.insertAdjacentHTML('beforeend',`<tr><td>${p.name}</td><td>${p.level}</td></tr>`); });
+  const dutySel=qs('#duty-prefect'); dutySel.innerHTML='';
+  storage.prefects.forEach((p,i)=> dutySel.insertAdjacentHTML('beforeend',`<option value="${i}">${p.name}</option>`));
 }
+function renderDuties(){ const tbody=qs('#duty-list'); tbody.innerHTML=''; storage.duties.forEach(d=>{
+ const p=storage.prefects[d.prefectId]||{name:'-'}; tbody.insertAdjacentHTML('beforeend',`<tr><td>${d.date}</td><td>${p.name}</td><td>${d.shift}</td><td>${d.note}</td></tr>`);
+});}
+function renderRecords(filter=''){ const tbody=qs('#record-list'); tbody.innerHTML='';
+ storage.records.filter(r=>!filter||r.student.toLowerCase().includes(filter.toLowerCase())||r.offence.toLowerCase().includes(filter.toLowerCase())||r.handledBy.toLowerCase().includes(filter.toLowerCase()))
+.forEach(r=>{ tbody.insertAdjacentHTML('beforeend',`<tr><td>${r.date}</td><td>${r.student}</td><td>${r.offence}</td><td>${r.action}</td><td>${r.handledBy}</td></tr>`);
+});}
+function saveAll(){ localStorage.setItem('prefects',JSON.stringify(storage.prefects)); localStorage.setItem('duties',JSON.stringify(storage.duties)); localStorage.setItem('records',JSON.stringify(storage.records));}
+function renderAll(){ renderPrefects(); renderDuties(); renderRecords();}
 
-qs('#add-prefect').addEventListener('click',()=>{
-  const name=qs('#pref-name').value; const level=qs('#pref-level').value;
-  if(!name) return alert('Enter name');
-  storage.prefects.push({name,level}); qs('#pref-name').value=''; qs('#pref-level').value=''; renderAll();
+// ---------------- Event Listeners ----------------
+qs('#signin').addEventListener('click',()=>{
+ const role=qs('#role').value; const name=qs('#displayName').value||role; const secret=qs('#secret').value;
+ if((role==='admin'&&secret==='admin123')||(role==='prefect'&&secret==='prefect123')){
+   user={role,name}; qs('#login').style.display='none'; qs('#views').style.display='block';
+   qs('#user-area').textContent=`${name} • ${role}`; qs('#logout-btn').style.display='inline-block'; renderAll();
+ } else { qs('#login-error').style.display='block'; qs('#login-error').textContent='Invalid secret'; }
 });
+qs('#logout-btn').addEventListener('click',()=>{ user=null; qs('#login').style.display='block'; qs('#views').style.display='none'; qs('#user-area').textContent='Not signed in'; qs('#logout-btn').style.display='none';});
+
+// Add Prefect
+qs('#add-prefect').addEventListener('click',()=>{ const name=qs('#pref-name').value; const level=qs('#pref-level').value; if(!name) return alert('Enter name'); storage.prefects.push({name,level}); qs('#pref-name').value=''; qs('#pref-level').value=''; saveAll(); renderAll();});
+// Add Duty
+qs('#add-duty').addEventListener('click',()=>{ const date=qs('#duty-date').value; const prefectId=Number(qs('#duty-prefect').value); const shift=qs('#duty-shift').value; const note=qs('#duty-note').value; if(!date||isNaN(prefectId)) return alert('Select date and prefect'); storage.duties.push({date,prefectId,shift,note}); qs('#duty-shift').value=''; qs('#duty-note').value=''; saveAll(); renderDuties();});
+// Add Record
+qs('#add-record').addEventListener('click',()=>{ const date=qs('#rec-date').value; const student=qs('#rec-student').value; const offence=qs('#rec-offence').value; const action=qs('#rec-action').value; const handledBy=qs('#rec-handled').value; if(!student||!offence) return alert('Enter student and offence'); storage.records.push({date,student,offence,action,handledBy}); qs('#rec-student').value=''; qs('#rec-offence').value=''; qs('#rec-action').value=''; qs('#rec-handled').value=''; saveAll(); renderRecords();});
+// Record Search
+qs('#rec-search').addEventListener('input', e=>{ renderRecords(e.target.value); });
 </script>
 </body>
 </html>
+
 
